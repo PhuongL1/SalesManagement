@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:SalesManagement.ViewModel"
         xmlns:helper="clr-namespace:SalesManagement.Helpers"
-        Title="Login" Height="300" Width="400"
+        Title="Login" Height="400" Width="400"
         x:Name="loginWindow">
 
     <Window.DataContext>
@@ -27,6 +27,27 @@
                     Margin="0,10,0,0"
                     CommandParameter="{Binding ElementName=loginWindow}"
                 />
+
+            <!-- Nút quên mật khẩu -->
+            <Button Content="Forgot Password" 
+                    Command="{Binding ForgotPasswordCommand}" 
+                    Width="200" 
+                    Margin="0,10,0,0"
+                    />
+
+            <!-- Giao diện đặt lại mật khẩu -->
+            <TextBlock Text="OTP Code:" Margin="0,20,0,0" />
+            <TextBox Width="200" Text="{Binding OtpCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock Text="New Password:" Margin="0,10,0,0"/>
+            <PasswordBox Width="200" 
+                         helper:PasswordBoxHelper.BindPassword="True" 
+                         helper:PasswordBoxHelper.BoundPassword="{Binding NewPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="Reset Password" 
+                    Command="{Binding ResetPasswordCommand}" 
+                    Width="200" 
+                    Margin="0,10,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
