@@ -1,16 +1,10 @@
 ﻿using SalesManagement.Model;
+using SalesManagement.View;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
-using SalesManagement.View;
-using System.Security.Cryptography;
 
 namespace SalesManagement.ViewModel
 {
@@ -41,8 +35,8 @@ namespace SalesManagement.ViewModel
         }
 
         public ICommand LoginCommand { get; set; }
+        public ICommand ForgotPasswordCommand { get; set; } // Thêm lệnh ForgotPassword
         public ICommand CloseCommand { get; set; }
-        public ICommand PasswordChangedCommand { get; set; }
 
         public LoginViewModel()
         {
@@ -56,31 +50,29 @@ namespace SalesManagement.ViewModel
                 return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
             }, (p) => { Login(p); });
 
+            // Command để quên mật khẩu
+            ForgotPasswordCommand = new RelayCommand<object>((p) =>
+            {
+                return !string.IsNullOrEmpty(Username); // Điều kiện để nút có thể nhấn là Username không rỗng
+            }, (p) => { ForgotPassword(); });
+
             // Command để đóng cửa sổ
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p.Close(); });
-
-            // Command để cập nhật Password từ PasswordBox
-            PasswordChangedCommand = new RelayCommand<PasswordBox>((p) => { return true; }, (p) => { Password = p.Password; });
         }
 
         // Hàm đăng nhập
         private void Login(Window p)
         {
-            // Xử lý logic đăng nhập
             if (p == null)
                 return;
 
             var accCount = DataProvider.Ins.DB.Users.Where(x => x.Username == Username && x.Password == Password).Count();
 
-            if (accCount > 0)  // Nếu tìm thấy tài khoản hợp lệ
+            if (accCount > 0)
             {
                 IsLogin = true;
-
-                // Mở giao diện MainView (thay vì ProductView)
                 MainView mainView = new MainView();
                 mainView.Show();
-
-                // Đóng giao diện đăng nhập
                 p.Close();
             }
             else
@@ -90,11 +82,27 @@ namespace SalesManagement.ViewModel
             }
         }
 
+        // Hàm quên mật khẩu
+        private void ForgotPassword()
+        {
+            // Giả sử bạn muốn tìm người dùng theo Username để gửi lại mật khẩu
+            var user = DataProvider.Ins.DB.Users.FirstOrDefault(x => x.Username == Username);
+
+            if (user != null)
+            {
+                // Giả sử mật khẩu là dạng plain text (không an toàn), bạn có thể gửi lại
+                MessageBox.Show($"Mật khẩu của bạn là: {user.Password}");
+            }
+            else
+            {
+                MessageBox.Show("Không tìm thấy tài khoản với tên người dùng này.");
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
-
 }
