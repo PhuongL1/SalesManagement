@@ -15,7 +15,9 @@
         </Grid.RowDefinitions>
 
         <!-- Danh sách sản phẩm -->
-        <ListView Grid.Row="0" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" HorizontalAlignment="Stretch">
+        <ListView Grid.Row="0" ItemsSource="{Binding Products}" 
+                  SelectedItem="{Binding SelectedProduct, Mode=TwoWay}" 
+                  HorizontalAlignment="Stretch">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Product ID" DisplayMemberBinding="{Binding ProductID}" Width="100"/>
@@ -27,11 +29,18 @@
             </ListView.View>
         </ListView>
 
-        <!-- Thêm/Sửa/Xóa sản phẩm -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Add Product" Command="{Binding AddProductCommand}" Width="120"/>
-            <Button Content="Update Product" Command="{Binding UpdateProductCommand}" Width="120" Margin="10,0,10,0"/>
-            <Button Content="Delete Product" Command="{Binding DeleteProductCommand}" Width="120"/>
+        <!-- Nhập thông tin sản phẩm -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+            <TextBox Text="{Binding SelectedProduct.ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,5"/>
+            <TextBox Text="{Binding SelectedProduct.Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,5"/>
+            <TextBox Text="{Binding SelectedProduct.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,5"/>
+            <TextBox Text="{Binding SelectedProduct.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="0,5"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Add Product" Command="{Binding AddProductCommand}" Width="120"/>
+                <Button Content="Update Product" Command="{Binding UpdateProductCommand}" Width="120" Margin="10,0,10,0"/>
+                <Button Content="Delete Product" Command="{Binding DeleteProductCommand}" Width="120"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
