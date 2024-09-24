@@ -27,11 +27,18 @@
             </ListView.View>
         </ListView>
 
-        <!-- Thêm/Sửa/Xóa khách hàng -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="Add Customer" Command="{Binding AddCustomerCommand}" Width="120"/>
-            <Button Content="Update Customer" Command="{Binding UpdateCustomerCommand}" Width="120" Margin="10,0,10,0"/>
-            <Button Content="Delete Customer" Command="{Binding DeleteCustomerCommand}" Width="120"/>
+        <!-- Các ô nhập dữ liệu -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="10">
+            <TextBox Text="{Binding NewCustomerName, UpdateSourceTrigger=PropertyChanged}" Width="200" />
+            <TextBox Text="{Binding NewCustomerPhone, UpdateSourceTrigger=PropertyChanged}" Width="200" />
+            <TextBox Text="{Binding NewCustomerEmail, UpdateSourceTrigger=PropertyChanged}" Width="200" />
+            <TextBox Text="{Binding NewCustomerAddress, UpdateSourceTrigger=PropertyChanged}" Width="200" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button Content="Add Customer" Command="{Binding AddCustomerCommand}" Width="120"/>
+                <Button Content="Update Customer" Command="{Binding EditCustomerCommand}" Width="120" Margin="10,0,10,0"/>
+                <Button Content="Delete Customer" Command="{Binding DeleteCustomerCommand}" Width="120"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
