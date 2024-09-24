@@ -23,10 +23,10 @@ namespace SalesManagement.Model
             }
 
         }
-        public SalesManagementEntities1 DB { get; set; }
+        public SalesManagementEntities2 DB { get; set; }
         public DataProvider() {
         
-            DB = new SalesManagementEntities1();
+            DB = new SalesManagementEntities2();
         }
     }
 }
