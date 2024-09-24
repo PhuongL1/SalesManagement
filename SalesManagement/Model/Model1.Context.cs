@@ -13,10 +13,10 @@ namespace SalesManagement.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class SalesManagementEntities1 : DbContext
+    public partial class SalesManagementEntities2 : DbContext
     {
-        public SalesManagementEntities1()
-            : base("name=SalesManagementEntities1")
+        public SalesManagementEntities2()
+            : base("name=SalesManagementEntities2")
         {
         }
     
