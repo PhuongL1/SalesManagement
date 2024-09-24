@@ -25,7 +25,7 @@ namespace SalesManagement.Model
         }
         public SalesManagementEntities1 DB { get; set; }
         public DataProvider() {
-        
+
             DB = new SalesManagementEntities1();
         }
     }
