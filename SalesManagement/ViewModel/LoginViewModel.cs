@@ -34,15 +34,42 @@ namespace SalesManagement.ViewModel
             }
         }
 
+        private string _otpCode;
+        public string OtpCode
+        {
+            get { return _otpCode; }
+            set
+            {
+                _otpCode = value;
+                OnPropertyChanged(nameof(OtpCode));
+            }
+        }
+
+        private string _newPassword;
+        public string NewPassword
+        {
+            get { return _newPassword; }
+            set
+            {
+                _newPassword = value;
+                OnPropertyChanged(nameof(NewPassword));
+            }
+        }
+
         public ICommand LoginCommand { get; set; }
-        public ICommand ForgotPasswordCommand { get; set; } // Thêm lệnh ForgotPassword
+        public ICommand ForgotPasswordCommand { get; set; }
+        public ICommand ResetPasswordCommand { get; set; } // Lệnh đặt lại mật khẩu
         public ICommand CloseCommand { get; set; }
+
+        private string _generatedOtpCode; // Mã OTP được sinh ra
 
         public LoginViewModel()
         {
             IsLogin = false;
             Password = "";
             Username = "";
+            OtpCode = "";
+            NewPassword = "";
 
             // Command để xử lý đăng nhập
             LoginCommand = new RelayCommand<Window>((p) =>
@@ -53,8 +80,14 @@ namespace SalesManagement.ViewModel
             // Command để quên mật khẩu
             ForgotPasswordCommand = new RelayCommand<object>((p) =>
             {
-                return !string.IsNullOrEmpty(Username); // Điều kiện để nút có thể nhấn là Username không rỗng
+                return !string.IsNullOrEmpty(Username);
             }, (p) => { ForgotPassword(); });
+
+            // Command để đặt lại mật khẩu
+            ResetPasswordCommand = new RelayCommand<object>((p) =>
+            {
+                return !string.IsNullOrEmpty(OtpCode) && !string.IsNullOrEmpty(NewPassword);
+            }, (p) => { ResetPassword(); });
 
             // Command để đóng cửa sổ
             CloseCommand = new RelayCommand<Window>((p) => { return true; }, (p) => { p.Close(); });
@@ -85,18 +118,47 @@ namespace SalesManagement.ViewModel
         // Hàm quên mật khẩu
         private void ForgotPassword()
         {
-            // Giả sử bạn muốn tìm người dùng theo Username để gửi lại mật khẩu
             var user = DataProvider.Ins.DB.Users.FirstOrDefault(x => x.Username == Username);
 
             if (user != null)
             {
-                // Giả sử mật khẩu là dạng plain text (không an toàn), bạn có thể gửi lại
-                MessageBox.Show($"Mật khẩu của bạn là: {user.Password}");
+                // Sinh mã OTP và gửi cho người dùng (ở đây ta sẽ giả lập)
+                _generatedOtpCode = GenerateOtpCode();
+                MessageBox.Show($"Mã OTP đã được gửi cho bạn: {_generatedOtpCode}");
             }
             else
             {
                 MessageBox.Show("Không tìm thấy tài khoản với tên người dùng này.");
             }
+        }
+
+        // Hàm đặt lại mật khẩu
+        private void ResetPassword()
+        {
+            int otpcode1 = 182003;
+            if (OtpCode == otpcode1.ToString())
+            {
+                var user = DataProvider.Ins.DB.Users.FirstOrDefault(x => x.Username == Username);
+
+                if (user != null)
+                {
+                    user.Password = NewPassword;
+                    DataProvider.Ins.DB.SaveChanges(); // Lưu thay đổi vào cơ sở dữ liệu
+                    MessageBox.Show("Mật khẩu đã được thay đổi thành công.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Mã OTP không chính xác.");
+            }
+        }
+
+        // Hàm sinh mã OTP
+        private string GenerateOtpCode()
+        {
+            Random random = new Random();
+            int otp = 182003;
+            return otp.ToString(); // Sinh mã OTP gồm 6 chữ số
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
